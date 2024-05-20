@@ -1,0 +1,30 @@
+name: bloggios-docker devsandbox
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V8_HOST }}
+          username: ${{ secrets.V8_USERNAME }}
+          key: ${{ secrets.V8_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/bloggios-deployment-docker-files
+            rm .env
+            git stash
+            git pull
+            docker-compose -f docker-compose-devsandbox.yml down
+            cp /root/secrets/.env /root/bloggios-deployment-docker-files/
+            docker-compose -f docker-compose-devsandbox.yml up -d

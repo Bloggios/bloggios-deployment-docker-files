@@ -1,0 +1,288 @@
+version: '3.8'
+services:
+
+  auth-provider-application:
+    image: auth-provider-application:1.0
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - EMAIL_PROVIDER_ID=${EMAIL_PROVIDER_ID}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - SUPERUSER_EMAIL=${SUPERUSER_EMAIL}
+      - SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - LOGGING_LEVEL=info
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - EUREKA_CLIENT_ENABLED=true
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  auth-provider-social-application:
+    image: auth-provider-application:1.0
+    ports:
+      - "7001:7001"
+    expose:
+      - "7001"
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - EMAIL_PROVIDER_ID=${EMAIL_PROVIDER_ID}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - SUPERUSER_EMAIL=${SUPERUSER_EMAIL}
+      - SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - LOGGING_LEVEL=info
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - EUREKA_CLIENT_ENABLED=true
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  bloggios-service-registry:
+    image: bloggios-service-registry:1.0
+    container_name: bloggios-service-registry
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+    environment:
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  bloggios-cloud-gateway:
+    image: bloggios-cloud-gateway:1.0
+    container_name: bloggios-cloud-gateway
+    ports:
+      - "7000:7000"
+    expose:
+      - "7000"
+    environment:
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - EUREKA_CLIENT_ENABLED=true
+      - EUREKA_URL=${EUREKA_URL}
+      - SERVER_HOST=${SERVER_HOST}
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - LOGGING_LEVEL=error
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  bloggios-notification-service:
+    image: bloggios-notification-service:1.0
+    container_name: bloggios-notification-service
+    environment:
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - EUREKA_URL=${EUREKA_URL}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - LOGGING_LEVEL=info
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  user-provider-application:
+    image: user-provider-application:1.0
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - LOGGING_LEVEL=info
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+    volumes:
+      - /var/bloggios-data/user-provider:/files/user-provider
+
+  post-provider-application:
+    image: post-provider-application:1.0
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - LOGGING_LEVEL=info
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - POST_IMAGES_PATH=${POST_IMAGES_PATH}
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+    volumes:
+      - /var/bloggios-data/post-provider:/files/post-provider
+
+  bloggios-websockets-provider:
+    image: bloggios-websockets-provider:1.0
+    container_name: bloggios-websockets-provider
+    ports:
+      - "7010:7010"
+    expose:
+      - "7010"
+    environment:
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - LOGGING_LEVEL=info
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - SERVER_PORT=7010
+      - APPLICATION_BASE_URL=${APPLICATION_BASE_URL}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  question-provider-application:
+    image: question-provider-application:1.0
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - QUESTION_IMAGES_PATH=${QUESTION_IMAGES_PATH}
+      - ANSWER_IMAGES_PATH=${ANSWER_IMAGES_PATH}
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+    volumes:
+      - /var/bloggios-data/question-provider:/files/question-provider
+
+  bloggios-admin-handler:
+    image: bloggios-admin-handler:1.0
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - LOGSTASH_PROVIDER=${LOGSTASH_PROVIDER}
+      - LOGSTASH_PROFILE=${LOGSTASH_PROFILE}
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4

@@ -1,0 +1,134 @@
+version: '3.8'
+services:
+
+  auth-provider-application:
+    image: auth-provider-application:1.0
+    container_name: auth-provider-application
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - EMAIL_PROVIDER_ID=${EMAIL_PROVIDER_ID}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - LOGGING_CONFIG=classpath:auth-logback.xml
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  auth-provider-social-application:
+    image: auth-provider-application:1.0
+    container_name: auth-provider-social-application
+    ports:
+      - "7001:7001"
+    expose:
+      - "7001"
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - EMAIL_PROVIDER_ID=${EMAIL_PROVIDER_ID}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - LOGGING_CONFIG=classpath:auth-logback.xml
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  bloggios-service-registry:
+    image: bloggios-service-registry:1.0
+    container_name: bloggios-service-registry
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+    environment:
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - LOGGING_CONFIG=classpath:registry-logback.xml
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  bloggios-cloud-gateway:
+    image: bloggios-cloud-gateway:1.0
+    container_name: bloggios-cloud-gateway
+    ports:
+      - "7000:7000"
+    expose:
+      - "7000"
+    environment:
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - EUREKA_CLIENT_ENABLED=true
+      - EUREKA_URL=${EUREKA_URL}
+      - SERVER_HOST=${SERVER_HOST}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - LOGGING_CONFIG=classpath:gateway-logback.xml
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+
+  bloggios-mail-service:
+    image: bloggios-mail-service:1.0
+    container_name: bloggios-mail-service
+    environment:
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - EUREKA_CLIENT_ENABLED=true
+      - EUREKA_URL=${EUREKA_URL}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - LOGGING_CONFIG=classpath:gateway-logback.xml
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
