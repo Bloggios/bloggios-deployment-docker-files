@@ -126,7 +126,7 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - ACTIVE_PROFILE=${ACTIVE_PROFILE}
-      - LOGGING_CONFIG=classpath:gateway-logback.xml
+      - LOGGING_CONFIG=classpath:mail-logback.xml
     deploy:
       replicas: 1
       restart_policy:
