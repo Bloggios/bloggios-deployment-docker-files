@@ -163,3 +163,40 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 4
+    volumes:
+      - /var/bloggios-data/user-provider:/files/user-provider
+
+  blog-provider-application:
+    image: blog-provider-application:1.0
+    container_name: blog-provider-application
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
+      - POSTGRES_IDLE=${POSTGRES_IDLE}
+      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
+      - EMAIL_PROVIDER_ID=${EMAIL_PROVIDER_ID}
+      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - EUREKA_URL=${EUREKA_URL}
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
+      - EUREKA_CLIENT_ENABLED=true
+      - ES_SERVER=${ES_SERVER}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - LOGGING_CONFIG=classpath:blog-logback.xml
+      - BASE_PATH=https://api.bloggios.in
+      - BLOG_IMAGES_PATH=${BLOG_IMAGES_PATH}
+      - COVER_IMAGES_PATH=${COVER_IMAGES_PATH}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 4
+    volumes:
+      - /var/bloggios-data/blog-provider:/files/blog-provider
