@@ -27,42 +27,7 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - LOGGING_CONFIG=classpath:auth-logback.xml
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-        max_attempts: 4
-
-  auth-provider-social-application:
-    image: auth-provider-application:1.0
-    container_name: auth-provider-social-application
-    ports:
-      - "7001:7001"
-    expose:
-      - "7001"
-    environment:
-      - POSTGRES_HOST=${POSTGRES_HOST}
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
-      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
-      - POSTGRES_IDLE=${POSTGRES_IDLE}
-      - POSTGRES_BATCH_SIZE=${POSTGRES_BATCH_SIZE}
-      - EMAIL_PROVIDER_ID=${EMAIL_PROVIDER_ID}
-      - ACTIVE_PROFILE=${ACTIVE_PROFILE}
-      - PRIVATE_KEY=${PRIVATE_KEY}
-      - PUBLIC_KEY=${PUBLIC_KEY}
-      - EUREKA_URL=${EUREKA_URL}
-      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-      - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
-      - EUREKA_CLIENT_ENABLED=true
-      - ES_SERVER=${ES_SERVER}
-      - ES_USERNAME=${ES_USERNAME}
-      - ES_PASSWORD=${ES_PASSWORD}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - LOGGING_CONFIG=classpath:auth-logback.xml
+      - GOOGLE_API_SECRET=${GOOGLE_SECRET}
     deploy:
       replicas: 1
       restart_policy:
