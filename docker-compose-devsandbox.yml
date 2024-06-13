@@ -27,7 +27,7 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - LOGGING_CONFIG=classpath:auth-logback.xml
-      - GOOGLE_API_SECRET=${GOOGLE_SECRET}
+      - GOOGLE_API_SECRET=${GOOGLE_API_SECRET}
     deploy:
       replicas: 1
       restart_policy:
