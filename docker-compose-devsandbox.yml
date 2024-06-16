@@ -29,7 +29,7 @@ services:
       - LOGGING_CONFIG=classpath:auth-logback.xml
       - GOOGLE_API_SECRET=${GOOGLE_API_SECRET}
     deploy:
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
         max_attempts: 4
@@ -93,7 +93,7 @@ services:
       - ACTIVE_PROFILE=${ACTIVE_PROFILE}
       - LOGGING_CONFIG=classpath:mail-logback.xml
     deploy:
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
         max_attempts: 4
@@ -124,7 +124,7 @@ services:
       - LOGGING_CONFIG=classpath:user-logback.xml
       - BASE_PATH=https://api.bloggios.in
     deploy:
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
         max_attempts: 4
@@ -159,7 +159,7 @@ services:
       - BLOG_IMAGES_PATH=${BLOG_IMAGES_PATH}
       - COVER_IMAGES_PATH=${COVER_IMAGES_PATH}
     deploy:
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
         max_attempts: 4
