@@ -3,7 +3,6 @@ services:
 
   auth-provider-application:
     image: auth-provider-application:1.0
-    container_name: auth-provider-application
     environment:
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
@@ -73,7 +72,6 @@ services:
 
   bloggios-mail-service:
     image: bloggios-mail-service:1.0
-    container_name: bloggios-mail-service
     environment:
       - BOOTSTRAP_SERVER=${BOOTSTRAP_SERVER}
       - POSTGRES_HOST=${POSTGRES_HOST}
@@ -100,7 +98,6 @@ services:
 
   user-provider-application:
     image: user-provider-application:1.0
-    container_name: user-provider-application
     environment:
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
@@ -133,7 +130,6 @@ services:
 
   blog-provider-application:
     image: blog-provider-application:1.0
-    container_name: blog-provider-application
     environment:
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
