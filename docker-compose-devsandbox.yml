@@ -27,6 +27,7 @@ services:
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - LOGGING_CONFIG=classpath:auth-logback.xml
       - GOOGLE_API_SECRET=${GOOGLE_API_SECRET}
+      - BASE_PATH=${BASE_PATH}
     deploy:
       replicas: 2
       restart_policy:
@@ -119,7 +120,7 @@ services:
       - ES_USERNAME=${ES_USERNAME}
       - ES_PASSWORD=${ES_PASSWORD}
       - LOGGING_CONFIG=classpath:user-logback.xml
-      - BASE_PATH=https://api.bloggios.in
+      - BASE_PATH=${BASE_PATH}
     deploy:
       replicas: 2
       restart_policy:
@@ -151,7 +152,7 @@ services:
       - ES_USERNAME=${ES_USERNAME}
       - ES_PASSWORD=${ES_PASSWORD}
       - LOGGING_CONFIG=classpath:blog-logback.xml
-      - BASE_PATH=https://api.bloggios.in
+      - BASE_PATH=${BASE_PATH}
       - BLOG_IMAGES_PATH=${BLOG_IMAGES_PATH}
       - COVER_IMAGES_PATH=${COVER_IMAGES_PATH}
     deploy:
